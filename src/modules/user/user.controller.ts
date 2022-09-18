@@ -11,6 +11,7 @@ import {
   ValidationPipe,
   UsePipes,
   ParseUUIDPipe,
+  HttpStatus,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -26,18 +27,15 @@ export class UserController {
 
   @Post()
   @HttpCode(200)
-  @UsePipes(ValidationPipe)
-  async create(@Body() createUserDto: CreateUserDto) {
-    const user = await this.userService.create(createUserDto);
-
-    // const photos = [];
-    createUserDto.photos.map((d) => {
-
-      this.photoService.create({
-        url: d.url,
-        user: user,
-      });
-    });
+  async create(
+    @Body(
+      new ValidationPipe({
+        errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+      }),
+    )
+    createUserDto: CreateUserDto,
+  ) {
+    const user = await this.userService.create(createUserDto,  this.photoService);
 
     return user;
   }

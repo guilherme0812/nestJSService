@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { IsArray, IsEmail, IsNotEmpty, Length, Matches } from 'class-validator';
 import { Photo } from 'src/modules/photo/entities/photo.entity';
+import { MESSAGES, passwordRule } from 'src/utils';
 
 export class CreateUserDto {
 
@@ -10,18 +11,15 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @Length(8, 24)
-  @Matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{6,64}$/gm, {
+  @Matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{6,24}$/gm, {
     message:
-      'Password must be between 6 and 64 characters long with 1 special character and capital character each',
+      MESSAGES.PASSWORD_RULE_MESSAGE,
   })
   password: string
   
   @IsNotEmpty()
   @Length(8, 24)
-  @Matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{6,64}$/gm, {
-    message:
-      'Password must be between 6 and 64 characters long with 1 special character and capital character each',
-  })
+  @Matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{6,24}$/gm)
   confirm: string
 
   @IsArray({message: 'Photos deve conter um array'})
