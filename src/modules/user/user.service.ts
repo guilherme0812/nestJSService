@@ -15,9 +15,9 @@ export class UserService {
 
   async create(createUserDto: CreateUserDto) {
    const user = this.repo.create({
-     firstName: createUserDto.firstName,
-     lastName: createUserDto.lastName,
-     active: true,
+      email: createUserDto.email,
+      password: createUserDto.password,
+      active: true
    })
    await this.repo.insert(user)
 
@@ -35,8 +35,6 @@ export class UserService {
   async update(id: string, updateUserDto: UpdateUserDto) {
     const user =  await this.repo.findOneBy({id})
 
-    user.firstName = updateUserDto.firstName,
-    user.lastName = updateUserDto.lastName,
     user.active = updateUserDto.active
 
     this.repo.save(user)
